@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Docker Revolution: Containerization Explained</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts: Roboto for Material Design feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Palette Selection: "Energetic Tech"
+         Primary Blue: #007BFF (Material Blue)
+         Secondary Green: #00C851 (Material Green)
+         Dark: #1C2331
+         Background: #F0F2F5
+         Text: #333333
+    -->
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F0F2F5;
+            color: #333333;
+        }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Constrain width for readability */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 400px;
+        }
+
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Custom Scrollbar for a polished look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        /* Material Card Hover Effect */
+        .material-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .material-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Arrow for Process Flow */
+        .arrow-down {
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #1C2331;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .arrow-right-md {
+                width: 0; 
+                height: 0; 
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                border-left: 15px solid #1C2331;
+                margin: auto 0;
+            }
+            .arrow-down-md-none {
+                display: none;
+            }
+        }
+    </style>
+    
+    <!-- 
+        CONFIRMATION: 
+        - NO SVG used. 
+        - NO Mermaid JS used.
+        - Chart.js labels wrapped.
+        - Tooltips configured.
+        - Palette applied.
+        - Narrative Plan: Problem -> Solution -> Comparison -> Workflow -> Impact -> Takeaway.
+        - Visualization mapping: 
+            1. VM vs Container -> Bar Chart (Compare)
+            2. Impact Analysis -> Radar Chart (Relationships)
+            3. Stability Trend -> Line Chart (Change)
+    -->
+</head>
+<body class="antialiased">
+
+    <!-- Header Section -->
+    <header class="bg-[#1C2331] text-white py-12 px-4 shadow-lg">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-4">STOP SAYING <span class="text-[#007BFF]">"IT WORKS ON MY MACHINE"</span></h1>
+            <p class="text-xl md:text-2xl font-light text-gray-300 max-w-3xl mx-auto">
+                The shift to <span class="font-bold text-white">Docker</span> is more than a tool upgrade—it's the universal shipping standard for modern software.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
+
+        <!-- Section 1: The Problem & Solution -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="bg-white rounded-xl shadow-md p-8 material-card h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-[#1C2331] mb-4 border-b-4 border-[#007BFF] inline-block pb-2">The Crisis: Configuration Drift</h2>
+                <p class="text-gray-700 leading-relaxed text-lg mb-6">
+                    We've all been there. Code runs perfectly on the developer's laptop but crashes in production. Why? Different OS versions, missing libraries, and conflicting dependencies. This is <strong>Configuration Drift</strong>.
+                </p>
+                <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                    <p class="text-red-700 font-medium">"But it works on my machine!"</p>
+                    <p class="text-sm text-red-600 mt-1">- Every Developer, Pre-2013</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-8 material-card h-full flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-[#1C2331] mb-4 border-b-4 border-[#00C851] inline-block pb-2">The Solution: Containers</h2>
+                <p class="text-gray-700 leading-relaxed text-lg mb-6">
+                    Docker solves this by packaging the application, dependencies, and configuration into a single, isolated unit called an <strong>Image</strong>.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-gray-700">
+                        <span class="w-8 h-8 rounded-full bg-[#00C851] text-white flex items-center justify-center mr-3 font-bold">✓</span>
+                        <span><strong>No Dependency Hell:</strong> Built once, runs everywhere.</span>
+                    </li>
+                    <li class="flex items-center text-gray-700">
+                        <span class="w-8 h-8 rounded-full bg-[#00C851] text-white flex items-center justify-center mr-3 font-bold">✓</span>
+                        <span><strong>Immutable:</strong> Production is identical to Dev.</span>
+                    </li>
+                    <li class="flex items-center text-gray-700">
+                        <span class="w-8 h-8 rounded-full bg-[#00C851] text-white flex items-center justify-center mr-3 font-bold">✓</span>
+                        <span><strong>Lightweight:</strong> Shares the OS kernel.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 2: Comparison (Chart: Bar) -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#1C2331] mb-4">Containers vs. Virtual Machines</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+                    Traditional VMs virtualize the entire hardware and OS, making them heavy. Docker containers virtualize only the OS application layer, sharing the host kernel. The efficiency gains are massive.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Text Context -->
+                <div class="bg-white rounded-xl shadow-md p-6 material-card flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-[#1C2331] mb-3">Efficiency Metrics</h3>
+                    <p class="text-gray-700 mb-4">
+                        Because containers don't need to boot a full Operating System for every app, they start in seconds (or milliseconds) compared to minutes for VMs. They also require significantly less RAM and disk space.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 text-center mt-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <span class="block text-3xl font-black text-[#007BFF]">Seconds</span>
+                            <span class="text-sm text-gray-600 font-medium">Container Boot Time</span>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <span class="block text-3xl font-black text-gray-500">Minutes</span>
+                            <span class="text-sm text-gray-600 font-medium">VM Boot Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart: Grouped Bar -->
+                <div class="bg-white rounded-xl shadow-md p-6 material-card">
+                    <h3 class="text-lg font-semibold text-center mb-4 text-gray-500 uppercase tracking-wide">Resource Usage Comparison</h3>
+                    <div class="chart-container">
+                        <canvas id="vmVsContainerChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Workflow (Diagram: HTML/CSS) -->
+        <section class="bg-[#1C2331] rounded-3xl p-8 md:p-12 text-white shadow-2xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">The Universal Shipping Workflow</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto text-lg">
+                    How do we get from code to a running container? It follows a strict, repeatable "Recipe" approach.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                
+                <!-- Step 1 -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-lg w-full md:w-1/4 relative">
+                    <div class="absolute -top-4 -left-4 w-10 h-10 bg-[#007BFF] rounded-full flex items-center justify-center text-white font-bold shadow-md">1</div>
+                    <h3 class="text-xl font-bold mb-2 text-[#007BFF]">Dockerfile</h3>
+                    <p class="text-sm text-gray-600 mb-2">The "Recipe". A text file defining the base OS, libraries, and code.</p>
+                    <code class="block bg-gray-100 p-2 rounded text-xs font-mono text-gray-700">FROM node:18<br>COPY . .<br>CMD ["npm", "start"]</code>
+                </div>
+
+                <!-- Arrow -->
+                <div class="arrow-down arrow-down-md-none border-t-[white]"></div> <!-- Mobile Arrow -->
+                <div class="hidden md:block text-4xl text-[#007BFF]">➜</div> <!-- Desktop Arrow -->
+
+                <!-- Step 2 -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-lg w-full md:w-1/4 relative">
+                    <div class="absolute -top-4 -left-4 w-10 h-10 bg-[#007BFF] rounded-full flex items-center justify-center text-white font-bold shadow-md">2</div>
+                    <h3 class="text-xl font-bold mb-2 text-[#007BFF]">Image</h3>
+                    <p class="text-sm text-gray-600">The "Frozen Package". Once built, this image is immutable. It contains everything needed to run.</p>
+                    <div class="mt-3 flex justify-center">
+                        <span class="text-4xl">📦</span>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="arrow-down arrow-down-md-none border-t-[white]"></div>
+                <div class="hidden md:block text-4xl text-[#007BFF]">➜</div>
+
+                <!-- Step 3 -->
+                <div class="bg-gradient-to-br from-[#00C851] to-[#007E33] text-white p-6 rounded-lg shadow-lg w-full md:w-1/4 relative">
+                    <div class="absolute -top-4 -left-4 w-10 h-10 bg-white text-[#00C851] rounded-full flex items-center justify-center font-bold shadow-md">3</div>
+                    <h3 class="text-xl font-bold mb-2">Container</h3>
+                    <p class="text-sm text-white opacity-90">The "Running Instance". This is the live environment executing your app.</p>
+                    <div class="mt-3 flex justify-center">
+                        <span class="text-4xl animate-pulse">🚀</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 4: Impact & Benefits (Charts: Radar & Line) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Radar Chart: The Docker Advantage -->
+            <div class="bg-white rounded-xl shadow-md p-6 material-card">
+                <div class="mb-4">
+                    <h3 class="text-2xl font-bold text-[#1C2331]">The "Perfect Shape" of Deployment</h3>
+                    <p class="text-gray-600 text-sm mt-2">Comparing traditional deployment methods (Manual/VM) against Docker across four critical axes.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="benefitsRadarChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Line Chart: Stability Over Time -->
+            <div class="bg-white rounded-xl shadow-md p-6 material-card">
+                <div class="mb-4">
+                    <h3 class="text-2xl font-bold text-[#1C2331]">Stability Impact</h3>
+                    <p class="text-gray-600 text-sm mt-2">
+                        Tracking "Environment-Related Bugs" (drift) in production before and after Docker adoption. The consistency of immutable images drastically reduces errors.
+                    </p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="stabilityLineChart"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Section 5: Key Takeaways (Cards) -->
+        <section class="bg-gray-100 rounded-xl p-8 border border-gray-200">
+            <h2 class="text-3xl font-bold text-[#1C2331] mb-8 text-center">Your Team's Action Plan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-lg shadow border-t-4 border-[#007BFF]">
+                    <h4 class="text-lg font-bold text-gray-800 mb-2">1. Define with Dockerfile</h4>
+                    <p class="text-gray-600 text-sm">Treat your infrastructure as code. The Dockerfile serves as executable documentation for your dependencies.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-lg shadow border-t-4 border-[#007BFF]">
+                    <h4 class="text-lg font-bold text-gray-800 mb-2">2. Build Immutable Images</h4>
+                    <p class="text-gray-600 text-sm">Never patch a running container. Rebuild the image. This guarantees that what you test is what you deploy.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-lg shadow border-t-4 border-[#00C851]">
+                    <h4 class="text-lg font-bold text-gray-800 mb-2">3. Achieve Local Parity</h4>
+                    <p class="text-gray-600 text-sm">Empower developers to run the full production stack locally. Say goodbye to integration surprises.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 py-8 border-t border-gray-300">
+            <p class="text-sm">Generated for Docker Education Series &copy; 2025</p>
+            <p class="text-xs mt-1">Visualization optimized for Single Page Application.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // ---------------------------------------------------------
+        // UTILITY FUNCTIONS
+        // ---------------------------------------------------------
+
+        // 1. Label Wrapping Helper (Strict <16 char Requirement)
+        function wrapLabel(str) {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= 16) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // 2. Global Tooltip Config (Strict Requirement)
+        const commonTooltipOptions = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // ---------------------------------------------------------
+        // CHART 1: VM vs Container (Bar Chart)
+        // ---------------------------------------------------------
+        const ctxVM = document.getElementById('vmVsContainerChart').getContext('2d');
+        
+        // Data processing for wrapping
+        const vmLabelsRaw = ['Deployment Speed (Scale 1-10)', 'Resource Overhead (Inverse Scale)'];
+        const vmLabels = vmLabelsRaw.map(wrapLabel);
+
+        new Chart(ctxVM, {
+            type: 'bar',
+            data: {
+                labels: vmLabels,
+                datasets: [
+                    {
+                        label: 'Traditional VM',
+                        data: [2, 9], // Slow speed, High overhead
+                        backgroundColor: '#B0BEC5', // Grey/Muted
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Docker Container',
+                        data: [9, 2], // Fast speed, Low overhead
+                        backgroundColor: '#007BFF', // Primary Blue
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltipOptions,
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { family: 'Roboto' } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        title: { display: true, text: 'Efficiency Score' }
+                    }
+                }
+            }
+        });
+
+        // ---------------------------------------------------------
+        // CHART 2: Benefits Radar (Radar Chart)
+        // ---------------------------------------------------------
+        const ctxRadar = document.getElementById('benefitsRadarChart').getContext('2d');
+
+        const radarLabelsRaw = ['Portability', 'Startup Speed', 'Isolation', 'Dev/Prod Parity', 'Resource Efficiency'];
+        const radarLabels = radarLabelsRaw.map(wrapLabel);
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: radarLabels,
+                datasets: [
+                    {
+                        label: 'Docker',
+                        data: [95, 90, 85, 98, 92],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 200, 81, 0.2)', // Green transparent
+                        borderColor: '#00C851',
+                        pointBackgroundColor: '#00C851',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#00C851'
+                    },
+                    {
+                        label: 'Legacy / VM',
+                        data: [60, 40, 90, 50, 40], // Good isolation, bad elsewhere
+                        fill: true,
+                        backgroundColor: 'rgba(28, 35, 49, 0.2)', // Dark transparent
+                        borderColor: '#1C2331',
+                        pointBackgroundColor: '#1C2331',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#1C2331'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltipOptions,
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#ddd' },
+                        grid: { color: '#eee' },
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        ticks: { backdropColor: 'transparent' } // Clean look
+                    }
+                }
+            }
+        });
+
+        // ---------------------------------------------------------
+        // CHART 3: Stability Trend (Line Chart)
+        // ---------------------------------------------------------
+        const ctxLine = document.getElementById('stabilityLineChart').getContext('2d');
+
+        const lineLabelsRaw = ['Month 1', 'Month 2', 'Month 3 (Adoption)', 'Month 4', 'Month 5', 'Month 6'];
+        const lineLabels = lineLabelsRaw.map(wrapLabel);
+
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: lineLabels,
+                datasets: [{
+                    label: 'Config Drift Bugs Reported',
+                    data: [45, 42, 38, 12, 5, 3], // High then drop
+                    borderColor: '#007BFF',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4 // Smooth curve
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: commonTooltipOptions,
+                    legend: { display: false },
+                    annotation: {
+                        // Note: Chart.js annotation plugin not loaded to keep simple, 
+                        // but the data drop clearly tells the story.
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Bugs / Month' }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
